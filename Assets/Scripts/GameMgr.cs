@@ -43,6 +43,8 @@ public class GameMgr : MonoBehaviour
         input.actions["MouseLeftBtnUp"].canceled += MouseLeftBtnUp;
         input.actions["Drag"].performed += Drag;
         unitCombination = new Unit[2];
+
+
 }
 
     void MouseLeftBtnDown(InputAction.CallbackContext context)
@@ -89,16 +91,17 @@ public class GameMgr : MonoBehaviour
                 if (hit.transform.CompareTag("Unit"))
                 {
                     unitCombination[1] = hit.collider.GetComponent<Unit>();
-                    Debug.Log(unitCombination[0].type);
-                    Debug.Log(unitCombination[1].type);
                     UnitSpawner.Instance.CompositionUnit(unitCombination);
                     Debug.Log("드래그 끝");
                 }
-                isDragging = false;
-                click_Type = CLICK_TYPE.IDLE;
+                else
+                {
+                    unitCombination[0].BackToImagePosition();
+                }
             }
         }
-
+        click_Type = CLICK_TYPE.IDLE;
+        isDragging = false;
     }
    void Drag(InputAction.CallbackContext context)
     {
@@ -108,6 +111,7 @@ public class GameMgr : MonoBehaviour
                 Vector3 worldPos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
                 worldPos.z = transform.position.z;
                 transform.position = startDragPos + (worldPos - startDragPos) + (Vector3)delta;
+                unitCombination[0].MoveImageWithMouse();
          }
     }
 

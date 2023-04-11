@@ -149,6 +149,7 @@ MonoBehaviour:
   attackRange: 5
   attackDamage: 0
   attackSpeed: 0.5
+  unitImage: {fileID: 2510002556386119144}
 --- !u!114 &2024331593678053090
 MonoBehaviour:
   m_ObjectHideFlags: 0

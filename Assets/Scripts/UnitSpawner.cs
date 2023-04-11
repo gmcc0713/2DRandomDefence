@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static GameMgr;
 
 public enum UnitType { Unit_Pistol = 0,Unit_Miner, Unit_Wizard, Unit_Archer,Unit_Rogue, Unit_Warrior,
                         Unit_Flamethrower, Unit_Priest, Unit_Spear, Unit_Crossbow,
@@ -26,8 +27,7 @@ public class UnitSpawner : MonoBehaviour
     private int maxIndex;
     private bool IsUnitSpawnReady =false;
     [SerializeField] private Ground ground;
-    [SerializeField]
-    private List<CombinationData> combinationDatas;
+    [SerializeField] private List<CombinationData> combinationDatas;
     private List<Unit> unitList = new List<Unit>();
 
     void Start()
@@ -35,18 +35,21 @@ public class UnitSpawner : MonoBehaviour
         maxIndex = 4;
         randomIndex = 0;
     }
-    public void CompositionUnit(Unit[] compositionUnit)
+    public bool CompositionUnit(Unit[] compositionUnit)
     {
         UnitType findType = FindCompositionUnit(compositionUnit);
         if (findType != UnitType.Unit_Non)
         {
+
             Vector2 spawnPos = compositionUnit[1].transform.position;
             ground.ChangeGroundTag(compositionUnit[0].transform.position);
             Destroy(compositionUnit[0].gameObject);
             Destroy(compositionUnit[1].gameObject);
-            Instantiate(UnitPrefab[(int)findType], spawnPos, Quaternion.identity);
 
+            Instantiate(UnitPrefab[(int)findType], spawnPos, Quaternion.identity);
+            return true;
         }
+        return false;
     }
     public UnitType FindCompositionUnit(Unit[] compositionUnit)
     {
@@ -78,7 +81,6 @@ public class UnitSpawner : MonoBehaviour
             GameObject clone = Instantiate(UnitPrefab[randomIndex], spawnTransform.position, Quaternion.identity);
             Unit unit = clone.GetComponent<Unit>();
             unit.type = (UnitType)randomIndex;
-            Debug.Log((UnitType)randomIndex);
 
             unitList.Add(unit);
             IsUnitSpawnReady = false;

@@ -5,11 +5,14 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    [SerializeField]
-    public UnitType type;
+    [SerializeField] public UnitType type;
     public float attackRange;
     public float attackDamage;
     public float attackSpeed;
+
+    [SerializeField] private GameObject unitImage;
+    private Vector2 unitBackImagePos;
+
     private BulletSpawner bS;
     private Animator playerAnim;
 
@@ -17,16 +20,31 @@ public class Unit : MonoBehaviour
     private bool isAttackType;
     private Monster targetMonster;
 
-/*    private int unitNumber = -1;
-    public int _unitNumber
+    /*    private int unitNumber = -1;
+        public int _unitNumber
+        {
+            get { return unitNumber; }
+            set { unitNumber = value; }
+        }
+    */
+    public void SettingMoveImageWithMouse()
     {
-        get { return unitNumber; }
-        set { unitNumber = value; }
+        unitBackImagePos = unitImage.transform.position;
+        unitImage.GetComponent<SpriteRenderer>().sortingOrder++;
     }
-*/
+    public void BackToImagePosition()
+    {
+        unitImage.transform.position = unitBackImagePos;
+        unitImage.GetComponent<SpriteRenderer>().sortingOrder--;
+    }
+    public void MoveImageWithMouse()
+    {
+        unitImage.transform.position = Input.mousePosition;
+    }
     void Start()
     {
         bS = GetComponent<BulletSpawner>();
+        unitBackImagePos = transform.position;
 /*       StartCoroutine(CheakNearMonster());*/
         //playerAnim = GetComponent<Animator>();
     }
