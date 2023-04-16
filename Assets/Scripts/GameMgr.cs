@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+public enum CLICK_TYPE {IDLE,PLACING_UNIT, COMPOSITION_UNIT,Sell_Unit}
 public class GameMgr : MonoBehaviour
 {
-    public enum CLICK_TYPE {IDLE,PLACING_UNIT, COMPOSITION_UNIT}
     [SerializeField] private UnitSpawner unitSpawner;
     [SerializeField] private PlayerInput input;
     [SerializeField] private Ground ground;
@@ -17,7 +17,6 @@ public class GameMgr : MonoBehaviour
     private bool isDragging = false;
     private Vector3 startDragPos;
     private Unit[] unitCombination;
-
     public CLICK_TYPE _click_Type
     {
         get { return click_Type; }
@@ -43,11 +42,9 @@ public class GameMgr : MonoBehaviour
         input.actions["MouseLeftBtnUp"].canceled += MouseLeftBtnUp;
         input.actions["Drag"].performed += Drag;
         unitCombination = new Unit[2];
+    }
 
-
-}
-
-    void MouseLeftBtnDown(InputAction.CallbackContext context)
+    void MouseLeftBtnDown(InputAction.CallbackContext context)                  //마우스 버튼을 눌렀을때
     {
         ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 30))
@@ -62,7 +59,6 @@ public class GameMgr : MonoBehaviour
                         if (unitSpawner.SetNewUnitInField(hit.transform))
                         {
                             UIManager.Instance.UnitSpawnWaitImageDelete();
-                            ground.ShowPlaceAbleRemove();
                             hit.transform.gameObject.tag = "CantSetUnitField";
                         }
                     }
@@ -72,16 +68,27 @@ public class GameMgr : MonoBehaviour
                     {
                         Debug.Log("드래그 시작");
                         unitCombination[0] = hit.collider.GetComponent<Unit>();
+                        unitCombination[0].SettingMoveImageWithMouse();
                         isDragging = true;
                         startDragPos = Input.mousePosition;
-
+                        break;
                     }
-                    break; 
+                    else
+                    {
+                        click_Type = CLICK_TYPE.IDLE;
+                    }
+                    break;
+                case CLICK_TYPE.Sell_Unit:
+                    if (hit.transform.CompareTag("Unit"))
+                    {
+                        UnitSpawner.Instance.SellUnit(hit.collider.GetComponent<Unit>());
+                    }
+                    break;
             }
-           
+            ground.ShowUnitGroundRemove();
         }
     }
-    void MouseLeftBtnUp(InputAction.CallbackContext context)
+    void MouseLeftBtnUp(InputAction.CallbackContext context)//마우스 버튼을 눌렀다가 땠을때
     {
         ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 30))
@@ -91,19 +98,28 @@ public class GameMgr : MonoBehaviour
                 if (hit.transform.CompareTag("Unit"))
                 {
                     unitCombination[1] = hit.collider.GetComponent<Unit>();
-                    UnitSpawner.Instance.CompositionUnit(unitCombination);
-                    Debug.Log("드래그 끝");
+                    if (!UnitSpawner.Instance.CompositionUnit(unitCombination))
+                    {
+                        ground.ShowUnitGroundRemove();
+                        unitCombination[0].BackToImagePosition();
+                    }
                 }
                 else
                 {
+                    ground.ShowUnitGroundRemove();
                     unitCombination[0].BackToImagePosition();
                 }
             }
         }
-        click_Type = CLICK_TYPE.IDLE;
+
+        if(click_Type != CLICK_TYPE.PLACING_UNIT)
+        {
+            click_Type = CLICK_TYPE.IDLE;
+        }
         isDragging = false;
+
     }
-   void Drag(InputAction.CallbackContext context)
+   void Drag(InputAction.CallbackContext context)                   //마우스 버튼을 누르고 있을때
     {
         if (isDragging)
         {

@@ -7,6 +7,8 @@ TagManager:
   - CanSetUnitField
   - CantSetUnitField
   - Unit
+  - Monster
+  - Bullet
   layers:
   - Default
   - TransparentFX

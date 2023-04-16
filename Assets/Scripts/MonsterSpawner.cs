@@ -23,10 +23,15 @@ public class MonsterSpawner : MonoBehaviour
     private GameObject MonsterPrefab;
     [SerializeField] 
     MapPath[] path;            //Path배열 (몬스터의 이동경로 Path)
-    private int pathIndex = 1;
+    private int pathIndex = 0;
     public List<Monster> monsterList;
+    [SerializeField] private ObjectPool<Monster>[] monsterPool;
     void Start()
     {
+        for (int i = 0; i < monsterPool.Length; i++)
+        {
+            monsterPool[i].Initialize();
+        }
         monsterList = new List<Monster>();
         StartCoroutine(SpawnMonster());
     }
@@ -40,22 +45,20 @@ public class MonsterSpawner : MonoBehaviour
     {
         while (true)
         {
-            GameObject clone = Instantiate(MonsterPrefab);              //해당 몬스터 복제
-            Monster monster = clone.GetComponent<Monster>();
-            monsterList.Add(monster);
-            monster.SetMonster(path[pathIndex].m_arrMovePoint);       //해당 몬스터에 MovePoint 전달
-
-            if (pathIndex == 0)
-                pathIndex = 1;
-            else
-                pathIndex = 0;
+            Monster cloneMonster;
+            if(monsterPool[0].GetObject(out cloneMonster))
+            {
+                monsterList.Add(cloneMonster);
+                cloneMonster.Initialize();
+                cloneMonster.SetMonster(path[pathIndex].m_arrMovePoint);       //해당 몬스터에 MovePoint 전달
+            }
             yield return new WaitForSeconds(4f);
-
+            break;
         }
     }
     public void DeleteMonster(Monster monster)
     {
         monsterList.Remove(monster);
-        Destroy(monster.gameObject);
+        monsterPool[0].PutInPool(monster);
     }
 }

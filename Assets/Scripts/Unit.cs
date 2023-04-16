@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Unit : MonoBehaviour
+public class Unit : MonoBehaviour,IPoolingObject
 {
     [SerializeField] public UnitType type;
     public float attackRange;
     public float attackDamage;
     public float attackSpeed;
 
+
     [SerializeField] private GameObject unitImage;
     private Vector2 unitBackImagePos;
-
-    private BulletSpawner bS;
+    [SerializeField] private BulletSpawner bulletSpawner;
     private Animator playerAnim;
-
     private Coroutine attackMonCor;
     private bool isAttackType;
     private Monster targetMonster;
@@ -27,29 +26,42 @@ public class Unit : MonoBehaviour
             set { unitNumber = value; }
         }
     */
+    public float _attckDamage => attackDamage;
+    public void SetPosition(Vector3 pos)
+    {
+        transform.position = pos;
+        
+    }
+
     public void SettingMoveImageWithMouse()
     {
         unitBackImagePos = unitImage.transform.position;
         unitImage.GetComponent<SpriteRenderer>().sortingOrder++;
+
     }
     public void BackToImagePosition()
     {
         unitImage.transform.position = unitBackImagePos;
         unitImage.GetComponent<SpriteRenderer>().sortingOrder--;
+
     }
     public void MoveImageWithMouse()
     {
-        unitImage.transform.position = Input.mousePosition;
+        Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        pos.z = 0;
+        unitImage.transform.position = pos;
     }
+
     void Start()
     {
-        bS = GetComponent<BulletSpawner>();
+        bulletSpawner = transform.Find("BulletSpawner").GetComponent<BulletSpawner>();
+        
         unitBackImagePos = transform.position;
-/*       StartCoroutine(CheakNearMonster());*/
+        StartCoroutine(CheakNearMonster());
         //playerAnim = GetComponent<Animator>();
     }
 
- /*   private IEnumerator CheakNearMonster() //근처에 적이 있는지 확인
+    private IEnumerator CheakNearMonster() //근처에 적이 있는지 확인
     {
         while (true)
         {
@@ -59,8 +71,9 @@ public class Unit : MonoBehaviour
             {
                 //몬스터와 유닛사이의 거리
                 float monsterDistance = Vector2.Distance(MonsterSpawner.Instance.monsterList[i].transform.position, transform.position);
-                if (monsterDistance <= attackRange && monsterDistance <= nearDistance)
+                if (monsterDistance <= attackRange && monsterDistance <= nearDistance && MonsterSpawner.Instance.monsterList[i].gameObject.activeSelf)
                 {
+                    Debug.Log(MonsterSpawner.Instance.monsterList[i].gameObject.activeSelf);
                     nearDistance = monsterDistance;
                     targetMonster = MonsterSpawner.Instance.monsterList[i];
                 }
@@ -70,21 +83,18 @@ public class Unit : MonoBehaviour
             {
                 if (attackMonCor == null)
                 {
-                    isAttackType = true;
-
                     attackMonCor = StartCoroutine(AttackMonster());
                 }
 
             }
             else
             {
-                isAttackType = false;
                 StopCoroutine(AttackMonster());
                 attackMonCor = null;
             }
             yield return null;
+            targetMonster = null;
         }
-
     }
     private IEnumerator AttackMonster()
     {
@@ -92,7 +102,6 @@ public class Unit : MonoBehaviour
         {
             if (targetMonster == null)
             {
-                isAttackType = false;
                 break;
             }
 
@@ -100,14 +109,13 @@ public class Unit : MonoBehaviour
             if (monsterDistance > attackRange)
             {
                 targetMonster = null;
-                isAttackType = false;
                 break;
             }
-            bS.SpawnBullets(transform.position, targetMonster);
+            bulletSpawner.SpawnBullets(transform.position, targetMonster.transform.position);
+
             //playerAnim.SetTrigger("IsAttack");
             yield return new WaitForSeconds(attackSpeed);
         }
 
-
-    }*/
+    }
 }

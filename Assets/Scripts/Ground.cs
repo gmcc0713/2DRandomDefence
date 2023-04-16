@@ -7,7 +7,7 @@ public class Ground : MonoBehaviour
 {
     //Render»ç¿ë
     private Renderer[] childGrounds;
-    private Color[] GroundColor = new Color[2]{ new Color(0, 0.5f, 1, 1) , new Color(1, 0.3f, 0, 1) };
+    private Color[] GroundColor = new Color[2]{ new Color(0, 0.5f, 1, 1) , new Color(1, 0.3f, 0, 1)};
     void Start()
     {
         childGrounds = new Renderer[transform.childCount];
@@ -17,7 +17,7 @@ public class Ground : MonoBehaviour
         }
     }
 
-    public void ShowPlaceAble()
+    public void ShowGroundSetUnit()
     {
         foreach(Renderer child in childGrounds)
         {
@@ -31,7 +31,21 @@ public class Ground : MonoBehaviour
             }
         }
     }
-    public void ShowPlaceAbleRemove()
+    public void ShowUnitGround()
+    {
+        foreach (Renderer child in childGrounds)
+        {
+            if (child.CompareTag("CanSetUnitField"))
+            {
+                child.material.color = GroundColor[1];
+            }
+            else if (child.CompareTag("CantSetUnitField"))
+            {
+                child.material.color = GroundColor[0];
+            }
+        }
+    }
+    public void ShowUnitGroundRemove()
     {
         foreach (Renderer child in childGrounds)
         {

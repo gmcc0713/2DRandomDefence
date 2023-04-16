@@ -1,13 +1,18 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using static GameMgr;
+static class Constants
+{
+    public const int MAX_RANDOM_INDEX = 6;
+}
 
-public enum UnitType { Unit_Pistol = 0,Unit_Miner, Unit_Wizard, Unit_Archer,Unit_Rogue, Unit_Warrior,
-                        Unit_Flamethrower, Unit_Priest, Unit_Spear, Unit_Crossbow,
-                        Unit_Sniper, Unit_Paladin,Unit_DragonTamer,Unit_BlackMage, Unit_Non}
+public enum UnitType { Unit_Hammer = 0,Unit_AxeMan, Unit_Wizard, Unit_Archer,Unit_Rogue, Unit_Warrior,
+                        Unit_Pistol, Unit_Priest, Unit_Spear, Unit_Reaper,
+                        Unit_Sniper, Unit_Paladin,Unit_MasicWarrior,Unit_BlackMage, Unit_Non}
 
 public class UnitSpawner : MonoBehaviour
 {
@@ -28,12 +33,18 @@ public class UnitSpawner : MonoBehaviour
     private bool IsUnitSpawnReady =false;
     [SerializeField] private Ground ground;
     [SerializeField] private List<CombinationData> combinationDatas;
-    private List<Unit> unitList = new List<Unit>();
+    [SerializeField] private ObjectPool<Unit>[] unitPool;
+
 
     void Start()
     {
-        maxIndex = 4;
+        maxIndex = Constants.MAX_RANDOM_INDEX;
         randomIndex = 0;
+        for (int i = 0; i < unitPool.Length; i++)
+        {
+            unitPool[i].Initialize();
+
+        }
     }
     public bool CompositionUnit(Unit[] compositionUnit)
     {
@@ -46,14 +57,18 @@ public class UnitSpawner : MonoBehaviour
             Destroy(compositionUnit[0].gameObject);
             Destroy(compositionUnit[1].gameObject);
 
-            Instantiate(UnitPrefab[(int)findType], spawnPos, Quaternion.identity);
+            Unit cloneUnit;
+            if(unitPool[(int)findType].GetObject(out cloneUnit))
+            {
+                cloneUnit.SetPosition(spawnPos);
+            }
+
             return true;
         }
         return false;
     }
     public UnitType FindCompositionUnit(Unit[] compositionUnit)
     {
-        Debug.Log("조합 시작");
         UnitType firstunitType = compositionUnit[0].type;
         UnitType secondunitType = compositionUnit[1].type;
         CombinationData result;
@@ -65,30 +80,39 @@ public class UnitSpawner : MonoBehaviour
         }
         return result._resultUnit;
     }
+    public void SellUnit(Unit sellUnit)
+    {
+        ground.ChangeGroundTag(sellUnit.transform.position);
+        unitPool[(int)sellUnit.type].PutInPool(sellUnit);
+
+    }
     public void SpawnNewUnit()              //구매버튼을 눌렀을때
     {
         if(!IsUnitSpawnReady)
         {
             randomIndex = UnityEngine.Random.Range(0, maxIndex);
+            
             IsUnitSpawnReady = true;
             UIManager.Instance.UnitSpawnWaitImageSet(randomIndex);
         }
     }
     public bool SetNewUnitInField(Transform spawnTransform)     //유닛 설치 가능한곳을 눌렀을때
     {
-        if(IsUnitSpawnReady)
+        if (IsUnitSpawnReady)
         {
-            GameObject clone = Instantiate(UnitPrefab[randomIndex], spawnTransform.position, Quaternion.identity);
-            Unit unit = clone.GetComponent<Unit>();
-            unit.type = (UnitType)randomIndex;
+            Unit cloneUnit;
+            Debug.Log(randomIndex);
+            if (unitPool[randomIndex].GetObject(out cloneUnit))
+            {
+                cloneUnit.SetPosition(spawnTransform.position);
+            }
 
-            unitList.Add(unit);
             IsUnitSpawnReady = false;
             return true;
         }
         return false;
-      
     }
+
 }
 
 

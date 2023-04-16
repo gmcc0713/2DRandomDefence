@@ -2,24 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviour,IPoolingObject
 {
-    private Monster targetMonster;
-    private float bulletSpeed = 50;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
+    private Vector3 targetMonsterPosition;
+    private float bulletSpeed = 20;
+    private BulletSpawner bulletSpawner;
+    private float attackDamage;
+    public float _attckDamage => attackDamage;
     void Update()
     {
-        transform.position = Vector2.MoveTowards(transform.position, targetMonster.transform.position, bulletSpeed * Time.deltaTime);
+          transform.position = Vector3.MoveTowards(transform.position, targetMonsterPosition, bulletSpeed * Time.deltaTime);
     }
-       public void SetBullet(Vector2 spawnPos, Monster targetMon)
+    public void SetPosition(Vector3 pos)
     {
-        targetMonster = targetMon;
-        transform.position = spawnPos;
+        transform.position = pos;
+    }
+    public void SetBulletInit(Vector3 targetMonPos,BulletSpawner bs,float damage)          //총알의 타겟설정
+    {
+        targetMonsterPosition = targetMonPos;
+        bulletSpawner = bs;
+        attackDamage = damage;
+    }
+    private void OnTriggerEnter2D(Collider2D other)           //총알이 몬스터와 충돌했을때
+    {
+        if (other.CompareTag("Monster"))
+        {
+            Debug.Log("몬스터와 충돌");
+            bulletSpawner.PutInPoolBullet(this);
+        }
     }
 }

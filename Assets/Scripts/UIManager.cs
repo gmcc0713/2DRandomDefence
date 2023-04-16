@@ -23,19 +23,23 @@ public class UIManager : MonoBehaviour
 
     public void ClickBuyUnitBtn()
     {
-        ground.ShowPlaceAble();
+        ground.ShowGroundSetUnit();
         UnitSpawner.Instance.SpawnNewUnit();
-        GameMgr.Instance._click_Type = GameMgr.CLICK_TYPE.PLACING_UNIT;
+        GameMgr.Instance._click_Type = CLICK_TYPE.PLACING_UNIT;
+    }
+    public void ClickSellUnitBtn()
+    {
+        ground.ShowUnitGround();
+        GameMgr.Instance._click_Type = CLICK_TYPE.Sell_Unit;
     }
     public void ClickCompositionUnitBtn()
     {
-        GameMgr.Instance._click_Type = GameMgr.CLICK_TYPE.COMPOSITION_UNIT;
-        Debug.Log(GameMgr.Instance._click_Type);
+        ground.ShowUnitGround();
+        GameMgr.Instance._click_Type = CLICK_TYPE.COMPOSITION_UNIT;
     }
 
     public void UnitSpawnWaitImageSet(int index)
     {
-        Debug.Log(index);
         unitImageObject.SetActive(true);
         //unitImageObject.GetComponent<Image>().sprite = arrUnitSprite[index];
     }
