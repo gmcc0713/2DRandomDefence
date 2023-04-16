@@ -60,7 +60,14 @@ public class Unit : MonoBehaviour,IPoolingObject
         StartCoroutine(CheakNearMonster());
         //playerAnim = GetComponent<Animator>();
     }
-
+    void UnitDie()
+    {
+        StopCoroutine(CheakNearMonster());
+    }
+    void UnitSetInit()
+    {
+        StartCoroutine(CheakNearMonster());
+    }
     private IEnumerator CheakNearMonster() //근처에 적이 있는지 확인
     {
         while (true)
@@ -73,7 +80,6 @@ public class Unit : MonoBehaviour,IPoolingObject
                 float monsterDistance = Vector2.Distance(MonsterSpawner.Instance.monsterList[i].transform.position, transform.position);
                 if (monsterDistance <= attackRange && monsterDistance <= nearDistance && MonsterSpawner.Instance.monsterList[i].gameObject.activeSelf)
                 {
-                    Debug.Log(MonsterSpawner.Instance.monsterList[i].gameObject.activeSelf);
                     nearDistance = monsterDistance;
                     targetMonster = MonsterSpawner.Instance.monsterList[i];
                 }

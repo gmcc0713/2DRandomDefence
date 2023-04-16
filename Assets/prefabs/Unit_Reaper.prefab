@@ -110,9 +110,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 9
-  attackRange: 0
-  attackDamage: 0
-  attackSpeed: 0
+  attackRange: 5
+  attackDamage: 5
+  attackSpeed: 1
   unitImage: {fileID: 638446571577868628}
   bulletSpawner: {fileID: 7504579735981534558}
 --- !u!1001 &7504579736852599694

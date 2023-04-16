@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6599883580861239388}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.222727, y: 1.9519526, z: -0.0665642}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -62,11 +62,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 5
-  attackRange: 0
-  attackDamage: 0
-  attackSpeed: 0
-  unitImage: {fileID: 0}
-  bulletSpawner: {fileID: 0}
+  attackRange: 5
+  attackDamage: 5
+  attackSpeed: 1
+  unitImage: {fileID: 4789095065979417860}
+  bulletSpawner: {fileID: 1261417989088813689}
 --- !u!1 &7838997447683811786
 GameObject:
   m_ObjectHideFlags: 0

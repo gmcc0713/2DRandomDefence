@@ -54,9 +54,10 @@ public class UnitSpawner : MonoBehaviour
 
             Vector2 spawnPos = compositionUnit[1].transform.position;
             ground.ChangeGroundTag(compositionUnit[0].transform.position);
-            Destroy(compositionUnit[0].gameObject);
-            Destroy(compositionUnit[1].gameObject);
-
+            unitPool[(int)compositionUnit[0].type].PutInPool(compositionUnit[0]);
+            unitPool[(int)compositionUnit[1].type].PutInPool(compositionUnit[1]);
+            compositionUnit[0] = null;
+            compositionUnit[1] = null;
             Unit cloneUnit;
             if(unitPool[(int)findType].GetObject(out cloneUnit))
             {
@@ -74,6 +75,7 @@ public class UnitSpawner : MonoBehaviour
         CombinationData result;
         result = combinationDatas.Find(type => (type._firstMaterialUnit == firstunitType&& type._secondMaterialUnit == secondunitType)
                                             || (type._firstMaterialUnit == secondunitType&& type._secondMaterialUnit == firstunitType));
+
         if(result==null)
         {
             return UnitType.Unit_Non;
@@ -91,7 +93,7 @@ public class UnitSpawner : MonoBehaviour
         if(!IsUnitSpawnReady)
         {
             randomIndex = UnityEngine.Random.Range(0, maxIndex);
-            
+            Debug.Log(randomIndex);
             IsUnitSpawnReady = true;
             UIManager.Instance.UnitSpawnWaitImageSet(randomIndex);
         }

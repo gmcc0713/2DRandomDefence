@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1673834572613020625}
   - component: {fileID: 5114694846129861231}
   m_Layer: 0
-  m_Name: Unit_Pistor
+  m_Name: Unit_Pistol
   m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,11 +62,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  attackRange: 0
-  attackDamage: 0
-  attackSpeed: 0
-  unitImage: {fileID: 0}
-  bulletSpawner: {fileID: 0}
+  attackRange: 5
+  attackDamage: 5
+  attackSpeed: 1
+  unitImage: {fileID: 712250725410623337}
+  bulletSpawner: {fileID: 7803737089253813235}
 --- !u!1 &4966511111832408434
 GameObject:
   m_ObjectHideFlags: 0

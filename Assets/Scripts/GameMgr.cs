@@ -69,6 +69,7 @@ public class GameMgr : MonoBehaviour
                         Debug.Log("드래그 시작");
                         unitCombination[0] = hit.collider.GetComponent<Unit>();
                         unitCombination[0].SettingMoveImageWithMouse();
+                        Debug.Log(unitCombination[0]);
                         isDragging = true;
                         startDragPos = Input.mousePosition;
                         break;

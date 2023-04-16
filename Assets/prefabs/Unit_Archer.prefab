@@ -110,11 +110,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
-  attackRange: 0
-  attackDamage: 0
-  attackSpeed: 0
-  unitImage: {fileID: 0}
-  bulletSpawner: {fileID: 0}
+  attackRange: 5
+  attackDamage: 5
+  attackSpeed: 5
+  unitImage: {fileID: 3894624318698904167}
+  bulletSpawner: {fileID: 5568280587560428241}
 --- !u!1001 &6266148010986817725
 PrefabInstance:
   m_ObjectHideFlags: 0

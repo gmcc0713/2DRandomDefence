@@ -61,10 +61,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea4e34d7e63d2ba4fbf3c5c839733878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 6
-  attackRange: 0
-  attackDamage: 0
-  attackSpeed: 0
+  type: 0
+  attackRange: 5
+  attackDamage: 5
+  attackSpeed: 1
   unitImage: {fileID: 1611948742831094375}
   bulletSpawner: {fileID: 2638383285287843966}
 --- !u!1 &6957189172910152353

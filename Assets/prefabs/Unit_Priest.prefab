@@ -110,9 +110,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 7
-  attackRange: 0
-  attackDamage: 0
-  attackSpeed: 0
+  attackRange: 5
+  attackDamage: 5
+  attackSpeed: 1
   unitImage: {fileID: 7905439933636250843}
   bulletSpawner: {fileID: 4590713968043405446}
 --- !u!1001 &958259535042387457
@@ -204,7 +204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6987801308082639579, guid: a47a0c7e460cf6c4eada17570cf1a4fc, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -170
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6987801308082639579, guid: a47a0c7e460cf6c4eada17570cf1a4fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
