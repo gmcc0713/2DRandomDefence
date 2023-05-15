@@ -21,6 +21,7 @@ public class ObjectPool<T> where T : MonoBehaviour, IPoolingObject
         sb.Append("Object Pool Container : ");
         sb.Append(targetObject.name);
         containerObject = new GameObject(sb.ToString()).transform;
+ 
         objectPool = new Queue<T>();                                            //풀링할 장소 할당
         MakeAndPooling();
         return true;
@@ -41,6 +42,7 @@ public class ObjectPool<T> where T : MonoBehaviour, IPoolingObject
     /// <summary> item 하나를 Pool에서 꺼내 활성화 시킨다. </summary>
     public bool GetObject(out T item)
     {
+        
         item = null;
         if (!containerObject) return false;
         if (0 >= objectPool.Count)

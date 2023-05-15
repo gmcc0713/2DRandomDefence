@@ -9,19 +9,19 @@ public class BulletSpawner : MonoBehaviour
     [SerializeField] private ObjectPool<Bullet> bulletPool;
 
     private float damage;
-    private void Start()
+    void Start()
     {
         bulletPool.Initialize();
     }
 
-    public void SpawnBullets(Vector2 spawnPos, Vector3 targetMonsterPos)
+    public void SpawnBullets(Vector2 spawnPos, Monster targetMonster)
     {
         Bullet bul;
         if (bulletPool.GetObject(out bul))
         {
             damage = transform.gameObject.GetComponentInParent<Unit>()._attckDamage;
+            bul.SetBulletInit(targetMonster, this, damage);
             bul.SetPosition(spawnPos);
-            bul.SetBulletInit(targetMonsterPos, this, damage);
         }
     }
     public void PutInPoolBullet(Bullet bullet)

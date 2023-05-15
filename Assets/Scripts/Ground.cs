@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+public enum GroundDisplayType
+{
+    Type1,
+    Type2
+}
 
 public class Ground : MonoBehaviour
 {
@@ -21,11 +26,11 @@ public class Ground : MonoBehaviour
     {
         foreach(Renderer child in childGrounds)
         {
-            if (child.CompareTag("CanSetUnitField"))
+            if (child.CompareTag("GroundWithoutPlayer"))
             {
                 child.material.color = GroundColor[0];
             }
-            else if(child.CompareTag("CantSetUnitField"))
+            else if(child.CompareTag("GroundWithPlayer"))
             {
                 child.material.color = GroundColor[1];
             }
@@ -35,11 +40,11 @@ public class Ground : MonoBehaviour
     {
         foreach (Renderer child in childGrounds)
         {
-            if (child.CompareTag("CanSetUnitField"))
+            if (child.CompareTag("GroundWithoutPlayer"))
             {
                 child.material.color = GroundColor[1];
             }
-            else if (child.CompareTag("CantSetUnitField"))
+            else if (child.CompareTag("GroundWithPlayer"))
             {
                 child.material.color = GroundColor[0];
             }
@@ -58,7 +63,7 @@ public class Ground : MonoBehaviour
         {
             if(child.transform.position == pos)
             {
-                child.gameObject.tag ="CanSetUnitField";
+                child.gameObject.tag = "GroundWithoutPlayer";
 
             }
         }

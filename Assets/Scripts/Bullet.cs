@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour,IPoolingObject
 {
-    private Vector3 targetMonsterPosition;
-    private float bulletSpeed = 20;
+    private Monster targetMonster;
+    private float bulletSpeed = 23.0f;
     private BulletSpawner bulletSpawner;
     private float attackDamage;
     public float _attckDamage => attackDamage;
     void Update()
     {
-          transform.position = Vector3.MoveTowards(transform.position, targetMonsterPosition, bulletSpeed * Time.deltaTime);
+        
+        transform.position = Vector3.MoveTowards(transform.position, targetMonster.transform.position, bulletSpeed * Time.deltaTime);
+        if(!targetMonster.gameObject.activeSelf)
+        {
+            bulletSpawner.PutInPoolBullet(this);
+        }
     }
     public void SetPosition(Vector3 pos)
     {
         transform.position = pos;
     }
-    public void SetBulletInit(Vector3 targetMonPos,BulletSpawner bs,float damage)          //ÃÑ¾ËÀÇ Å¸°Ù¼³Á¤
+    public void SetBulletInit(Monster targetMon,BulletSpawner bs,float damage)          //ÃÑ¾ËÀÇ Å¸°Ù¼³Á¤
     {
-        targetMonsterPosition = targetMonPos;
+        targetMonster = targetMon;
         bulletSpawner = bs;
         attackDamage = damage;
     }
@@ -27,8 +32,8 @@ public class Bullet : MonoBehaviour,IPoolingObject
     {
         if (other.CompareTag("Monster"))
         {
-            Debug.Log("¸ó½ºÅÍ¿Í Ãæµ¹");
             bulletSpawner.PutInPoolBullet(this);
         }
     }
+
 }

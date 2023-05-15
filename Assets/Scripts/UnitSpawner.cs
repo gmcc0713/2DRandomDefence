@@ -27,14 +27,14 @@ public class UnitSpawner : MonoBehaviour
         }
     }
     //===============================================================================
-    [SerializeField] public GameObject []UnitPrefab;
+    [SerializeField] public GameObject []unitPrefab;
     private int randomIndex;
     private int maxIndex;
     private bool IsUnitSpawnReady =false;
     [SerializeField] private Ground ground;
     [SerializeField] private List<CombinationData> combinationDatas;
     [SerializeField] private ObjectPool<Unit>[] unitPool;
-
+    public GameObject[] _unitPrefabs => unitPrefab;
 
     void Start()
     {
@@ -51,7 +51,6 @@ public class UnitSpawner : MonoBehaviour
         UnitType findType = FindCompositionUnit(compositionUnit);
         if (findType != UnitType.Unit_Non)
         {
-
             Vector2 spawnPos = compositionUnit[1].transform.position;
             ground.ChangeGroundTag(compositionUnit[0].transform.position);
             unitPool[(int)compositionUnit[0].type].PutInPool(compositionUnit[0]);
@@ -88,22 +87,23 @@ public class UnitSpawner : MonoBehaviour
         unitPool[(int)sellUnit.type].PutInPool(sellUnit);
 
     }
-    public void SpawnNewUnit()              //구매버튼을 눌렀을때
+    public UnitType SpawnNewUnit()              //구매버튼을 눌렀을때
     {
         if(!IsUnitSpawnReady)
         {
             randomIndex = UnityEngine.Random.Range(0, maxIndex);
-            Debug.Log(randomIndex);
             IsUnitSpawnReady = true;
             UIManager.Instance.UnitSpawnWaitImageSet(randomIndex);
+            return (UnitType)randomIndex;
         }
+        Debug.Log("유닛 생성 실패");
+        return UnitType.Unit_Non;
     }
     public bool SetNewUnitInField(Transform spawnTransform)     //유닛 설치 가능한곳을 눌렀을때
     {
         if (IsUnitSpawnReady)
         {
             Unit cloneUnit;
-            Debug.Log(randomIndex);
             if (unitPool[randomIndex].GetObject(out cloneUnit))
             {
                 cloneUnit.SetPosition(spawnTransform.position);
