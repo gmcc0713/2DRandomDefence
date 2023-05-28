@@ -1,6 +1,7 @@
 using System.Collections;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 public enum CLICK_TYPE {IDLE,PLACING_UNIT, COMPOSITION_UNIT,Sell_Unit,Show_Pannel}
@@ -9,10 +10,11 @@ public class GameMgr : MonoBehaviour
     [SerializeField] private UnitSpawner unitSpawner;
     [SerializeField] private PlayerInput input;
     [SerializeField] private Ground ground;
-    [SerializeField] private Image fade;
+    [SerializeField] private GameObject gameResultImage;
+    public GameObject _gameResultImage => gameResultImage;
+
 
     public static GameMgr Instance { get; private set; }
-    private Camera mainCamera;
     private Ray ray;
     private RaycastHit hit;
 
@@ -27,6 +29,8 @@ public class GameMgr : MonoBehaviour
     private int playerHealth;             
 
     private int playerBuyUnitGold;       //유닛 구매 가격
+    private bool isGameEnd;
+    public bool _isGameEnd => isGameEnd;
     public CLICK_TYPE _click_Type
     {
         get { return click_Type; }
@@ -53,11 +57,15 @@ public class GameMgr : MonoBehaviour
         {
             Instance = this;
         }
-        mainCamera = Camera.main;
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        Initialize();
     }
     //===============================================================================
-
-    void Start()
+    public void Initialize()
     {
         input.SwitchCurrentActionMap("Player");
         input.actions["MouseLeftBtnDown"].performed += MouseLeftBtnDown;
@@ -68,13 +76,13 @@ public class GameMgr : MonoBehaviour
         playerHealth = 100;
         playerGold = 300;
         playerBuyUnitGold = 100;
+
         UIManager.Instance.SetGoldUI();
         UIManager.Instance.SetHealthUI();
     }
-    
     void MouseLeftBtnDown(InputAction.CallbackContext context)                  //마우스 버튼을 눌렀을때
     {
-        ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 30)&& !isDragging)
         {
             switch (click_Type)
@@ -91,6 +99,10 @@ public class GameMgr : MonoBehaviour
                             hit.transform.gameObject.tag = "GroundWithPlayer";
                             click_Type = CLICK_TYPE.IDLE;
                             ground.ShowUnitGroundRemove();
+                        }
+                        else
+                        {
+                            click_Type = CLICK_TYPE.IDLE;
                         }
                     }
                     return;
@@ -125,8 +137,7 @@ public class GameMgr : MonoBehaviour
     }
     void MouseLeftBtnUp(InputAction.CallbackContext context)//마우스 버튼을 눌렀다가 땠을때
     {
-        Debug.Log("마우스 버튼 뗐을때");
-        ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 30))
         {
             if (isDragging && click_Type == CLICK_TYPE.COMPOSITION_UNIT)
@@ -144,10 +155,6 @@ public class GameMgr : MonoBehaviour
             }
         }
 
-        if (click_Type != CLICK_TYPE.PLACING_UNIT)
-        {
-            click_Type = CLICK_TYPE.IDLE;
-        }
         isDragging = false;
     }
    void Drag(InputAction.CallbackContext context)                   //마우스 버튼을 누르고 있을때
@@ -155,7 +162,7 @@ public class GameMgr : MonoBehaviour
         if (isDragging)
         {
             Vector2 delta = context.ReadValue<Vector2>();
-            Vector3 worldPos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             worldPos.z = transform.position.z;
             transform.position = startDragPos + (worldPos - startDragPos) + (Vector3)delta;
             unitCombination[0].MoveImageWithMouse();
@@ -167,10 +174,11 @@ public class GameMgr : MonoBehaviour
     {
         playerHealth -= damage;
         UIManager.Instance.SetHealthUI();
+
         if(playerHealth<=0)
         {
-            StartCoroutine(GameOverAnimation());
-
+            isGameEnd = true;
+            gameResultImage.GetComponent<GameResultSetting>().CallFadeOut(GameResult_Type.GameOver);
         }
     }
     public bool IsEnoughtGold(int gold)
@@ -186,15 +194,28 @@ public class GameMgr : MonoBehaviour
     {
         playerGold += addGold;
     }
-    private IEnumerator GameOverAnimation()
+
+    void OnEnable()
     {
-        Time.timeScale = 0;
-        fade.gameObject.SetActive(true);
-        fade.GetComponent<Fade>().CallFadeOut();
-
-        yield return null;
-
+        // 씬 매니저의 sceneLoaded에 체인을 건다.
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
     }
 
+    // 체인을 걸어서 이 함수는 매 씬마다 호출된다.
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Time.timeScale = 1;
+        Initialize();
+        WaveManager.Instance.SceneLoad();
+    }
+
+    void OnDisable()
+    {
+        input.actions["MouseLeftBtnDown"].performed -= MouseLeftBtnDown;
+        input.actions["MouseLeftBtnUp"].canceled -= MouseLeftBtnUp;
+        input.actions["Drag"].performed -= Drag;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 }
+   

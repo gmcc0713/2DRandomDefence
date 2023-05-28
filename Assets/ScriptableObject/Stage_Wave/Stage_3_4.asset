@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monArr:
   - monsterTypeIndex: 0
-    monsterCount: 5
+    monsterCount: 20
   - monsterTypeIndex: 1
-    monsterCount: 10
+    monsterCount: 15
   - monsterTypeIndex: 2
     monsterCount: 15
   - monsterTypeIndex: 3

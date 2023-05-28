@@ -103,7 +103,7 @@ MonoBehaviour:
   HPBar: {fileID: 881422654448165940}
   damageUI: {fileID: 5955953253888015779}
   moveSpeed: 3
-  defaultHealth: 40
+  defaultHealth: 100
   curHealth: 0
 --- !u!58 &5525265238446136385
 CircleCollider2D:

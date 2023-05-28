@@ -11,6 +11,7 @@ TagManager:
   - GroundWithPlayer
   - GroundWithoutPlayer
   - Undefined
+  - SoundSetting
   layers:
   - Default
   - TransparentFX

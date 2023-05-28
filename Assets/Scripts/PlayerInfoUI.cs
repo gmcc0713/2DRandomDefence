@@ -8,11 +8,12 @@ public class PlayerInfoUI : MonoBehaviour
     [SerializeField] Image playerInfoImage;
     [SerializeField] Image arrowImage;
     private float moveSpeed = 500.0f;
+
     public void ClickPlayerInfo()
     {
         StartCoroutine(MovePlayerInfo());
-        
     }
+
     private IEnumerator MovePlayerInfo()
     {
         switch (IsPlayerInfoHide)

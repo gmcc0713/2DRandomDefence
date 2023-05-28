@@ -1,55 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1651740489584547376
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7165223367334778500}
-  - component: {fileID: 9008047075442424336}
-  m_Layer: 0
-  m_Name: BulletSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7165223367334778500
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1651740489584547376}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.4592676, y: 136.32187, z: -10.060398}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1351190544152458413}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9008047075442424336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1651740489584547376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a920f9da6910b7b42b889a9240b1129a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BulletPrefab: {fileID: 6404892330212328902, guid: 94c1c23cc870932408edacdab87becb5,
-    type: 3}
-  bulletPool:
-    targetObject: {fileID: 6404892330212328897, guid: 94c1c23cc870932408edacdab87becb5,
-      type: 3}
-    poolingAmount: 1
 --- !u!1 &3395814217779060853
 GameObject:
   m_ObjectHideFlags: 0
@@ -81,7 +31,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7569253277813575760}
-  - {fileID: 7165223367334778500}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -101,10 +50,10 @@ MonoBehaviour:
   attackRange: 3
   defaultDamage: 10
   attackSpeed: 0.5
+  attackDistanceType: 0
   attackType: 0
-  unitGold: 0
+  unitGold: 70
   unitImage: {fileID: 7569253277813575761}
-  bulletSpawner: {fileID: 9008047075442424336}
   playerAnim: {fileID: 2912730590991968536}
 --- !u!65 &-4052273666688339619
 BoxCollider:

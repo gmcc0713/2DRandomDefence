@@ -16,9 +16,9 @@ MonoBehaviour:
   - monsterTypeIndex: 0
     monsterCount: 10
   - monsterTypeIndex: 1
-    monsterCount: 5
+    monsterCount: 10
   - monsterTypeIndex: 2
-    monsterCount: 5
+    monsterCount: 10
   stageData:
     stage: 2
     wave: 1

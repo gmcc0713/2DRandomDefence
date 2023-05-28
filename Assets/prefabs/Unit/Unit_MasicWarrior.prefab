@@ -30,7 +30,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3382469333202555521}
   - {fileID: 5623124203879360887}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -51,10 +50,10 @@ MonoBehaviour:
   attackRange: 5
   defaultDamage: 90
   attackSpeed: 1
-  attackType: 1
-  unitGold: 0
+  attackDistanceType: 1
+  attackType: 2
+  unitGold: 300
   unitImage: {fileID: 5623124203879360886}
-  bulletSpawner: {fileID: 3382469333202555522}
   playerAnim: {fileID: 1111865058890485823}
 --- !u!65 &8773089755924873505
 BoxCollider:
@@ -69,56 +68,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &3382469333202555523
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3382469333202555521}
-  - component: {fileID: 3382469333202555522}
-  m_Layer: 0
-  m_Name: BulletSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3382469333202555521
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3382469333202555523}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5958.258, y: -315.34198, z: 5.7957687}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3382469331813265329}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3382469333202555522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3382469333202555523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a920f9da6910b7b42b889a9240b1129a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BulletPrefab: {fileID: 6404892330212328902, guid: cb73095dd9dede54b936089e33feacd8,
-    type: 3}
-  bulletPool:
-    targetObject: {fileID: 6404892330212328897, guid: cb73095dd9dede54b936089e33feacd8,
-      type: 3}
-    poolingAmount: 1
 --- !u!1001 &3382469333071952812
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -144,7 +93,7 @@ PrefabInstance:
     - target: {fileID: 6987801308082639579, guid: 68af4f0f3292e5b41b365085cd07edb9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6987801308082639579, guid: 68af4f0f3292e5b41b365085cd07edb9,
         type: 3}

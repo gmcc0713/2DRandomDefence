@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monArr:
   - monsterTypeIndex: 0
-    monsterCount: 15
+    monsterCount: 20
   - monsterTypeIndex: 1
-    monsterCount: 15
+    monsterCount: 30
   stageData:
     stage: 1
     wave: 5

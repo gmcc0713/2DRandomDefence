@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monArr:
   - monsterTypeIndex: 0
-    monsterCount: 10
+    monsterCount: 20
   - monsterTypeIndex: 1
-    monsterCount: 15
+    monsterCount: 20
   - monsterTypeIndex: 2
-    monsterCount: 15
+    monsterCount: 20
   stageData:
     stage: 2
     wave: 4
