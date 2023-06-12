@@ -64,7 +64,7 @@ public class UnitSpawner : MonoBehaviour
             {
                 cloneUnit.SetPosition(spawnPos);
             }
-
+            cloneUnit.PlayCombinationParticle();
             return true;
         }
         return false;

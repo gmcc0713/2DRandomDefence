@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+
 
 public enum Attack_Distance_Type { Type_CloseAttack = 0, Type_LongRangeAttack,Type_Count}
 public enum Attack_Type { Unit_Attack_Sword = 0, Unit_Attack_Bow, Unit_Attack_Masic, Unit_Attack_Gun }
@@ -18,6 +17,7 @@ public class Unit : MonoBehaviour,IPoolingObject
     public int _unitGold => unitGold;
     [SerializeField] private GameObject unitImage;      //유닛 이미지
     [SerializeField] private Animator playerAnim;       //유닛 애니메이션
+    [SerializeField] private ParticleSystem combinationParticle;       //유닛 조합 파티클
 
     private Vector2 unitBackImagePos;
     private Coroutine attackMonCor;
@@ -28,7 +28,10 @@ public class Unit : MonoBehaviour,IPoolingObject
     {
         transform.position = pos;
     }
-
+    void Awake()
+    {
+        combinationParticle.Stop();
+    }
     public void SettingMoveImageWithMouse()                     //드래그 상태일때 이미지가 마우스 따라가도록 하기전 세팅 함수
     {
         unitBackImagePos = unitImage.transform.position;
@@ -48,9 +51,8 @@ public class Unit : MonoBehaviour,IPoolingObject
         unitImage.transform.position = pos;
     }
 
-    void Start()
+    private void OnEnable()
     {
-        
         unitBackImagePos = transform.position;
         if (attackDistanceType == Attack_Distance_Type.Type_LongRangeAttack)     //원거리 공격 모션 설정
         {
@@ -63,15 +65,6 @@ public class Unit : MonoBehaviour,IPoolingObject
         }
 
         StartCoroutine(CheakNearMonster());                      //주변 몬스터 탐색 시작
-
-    }
-    void UnitDie()                                      //유닛이 없어졌을때
-    {
-        StopCoroutine(CheakNearMonster());              //탐색 종료
-    }
-    void UnitSetInit()                                  //유닛 생성되었을때 탐색 시작
-    {
-        StartCoroutine(CheakNearMonster());
     }
     private IEnumerator CheakNearMonster() //근처에 적이 있는지 확인
     {
@@ -103,19 +96,22 @@ public class Unit : MonoBehaviour,IPoolingObject
                 }
             }
 
-            if (targetMonster != null && !targetMonster._isDie)          //타겟몬스터가 있을때
+            if (targetMonster != null)          //타겟몬스터가 있을때
             {
 
                 if (attackMonCor == null)       //코루틴이 실행중이 아닐때
                 {
-                    attackMonCor = StartCoroutine(AttackMonster());     //코루틴 실행
+                    attackMonCor = StartCoroutine(AttackMonster());     //코루틴 실행\
                 }
 
             }
             else                                //타겟몬스터가 없으면
             {
-                StopCoroutine(AttackMonster()); //코루틴 종료
-                attackMonCor = null;
+                if (attackMonCor != null)       //코루틴이 실행중이 아닐때
+                {
+                    StopCoroutine(attackMonCor);
+                    attackMonCor = null;
+                }
             }
             yield return null;
             targetMonster = null;
@@ -123,25 +119,34 @@ public class Unit : MonoBehaviour,IPoolingObject
     }
     private IEnumerator AttackMonster()            //몬스터 공격 코루틴
     {
-        yield return new WaitForSeconds(0.1f);
+
         while (true)
         {
-            if (targetMonster == null)
+            if (targetMonster == null|| targetMonster._isDie)
             {
-                break;
+                yield break;
+            }
+            else
+            {
+                float monsterDistance = Vector2.Distance(targetMonster.transform.position, transform.position);
+                if (monsterDistance > attackRange)
+                {
+                    targetMonster = null;
+                    break;
+                }
+                BulletSpawner.Instance.SpawnBullets(transform.position, targetMonster, _attckDamage, attackType);
+
+                SoundManager.Instance.PlayAudioClipOneShot(Sound_Type.Sound_Character, (int)attackType);
+                playerAnim.SetTrigger("Attack");
+                yield return new WaitForSeconds(attackSpeed);
             }
 
-            float monsterDistance = Vector2.Distance(targetMonster.transform.position, transform.position);
-            if (monsterDistance > attackRange)
-            {
-                targetMonster = null;
-                break;
-            }
-            BulletSpawner.Instance.SpawnBullets(transform.position, targetMonster,_attckDamage , attackType);
-
-            SoundManager.Instance.PlayAudioClipOneShot(Sound_Type.Sound_Character,(int)attackType);
-            playerAnim.SetTrigger("Attack");
-            yield return new WaitForSeconds(attackSpeed);
+          
         }
+    }
+    public void PlayCombinationParticle()
+    {
+        combinationParticle.Play();
+        Debug.Log(combinationParticle);
     }
 }

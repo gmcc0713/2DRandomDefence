@@ -23,6 +23,10 @@ public class Bullet : MonoBehaviour,IPoolingObject
                 BulletSpawner.Instance.PutInPoolBullet(this);
             }
         }
+        else
+        {
+            BulletSpawner.Instance.PutInPoolBullet(this);
+        }
        
     }
     public void SetPosition(Vector3 pos)

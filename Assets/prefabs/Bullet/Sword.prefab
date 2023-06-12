@@ -97,9 +97,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6404892330212328902}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df7c3d4cfcfac7f4b873ceb90e51f573, type: 3}
+  m_Script: {fileID: 11500000, guid: e18e14f334ba06b488ca2122432e9020, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletType: 0
 --- !u!58 &6404892330212328925
 CircleCollider2D:
   m_ObjectHideFlags: 0

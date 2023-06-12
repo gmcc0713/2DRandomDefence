@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
+
 public class MenuClickEvent : MonoBehaviour
 {
     public static MenuClickEvent Instance { get; private set; }
@@ -28,6 +29,7 @@ public class MenuClickEvent : MonoBehaviour
     {
         SoundManager.Instance.PlayAudioClipOneShot(Sound_Type.Sound_SFX, (int)SFX_Num.Click_Button);
         pannel.SetActive(false);
+        pageIndex = 0;
     }
     public void ClickGameOptionButton(GameObject combinationListPannel)
     {
@@ -43,18 +45,20 @@ public class MenuClickEvent : MonoBehaviour
         else
         {
             PlayerPrefs.SetInt("SelectStage", stage);
-            SceneManager.LoadScene("PlayScene");
+            SceneManager.LoadScene("LoadingScene");
         }
     }
 
-    public void ClickHelpBtn(GameObject combinationListPannel)
+    public void ClickHelpBtn(GameObject panel)
     {
-        if (GameMgr.Instance._click_Type == CLICK_TYPE.IDLE)
-        {
-            SoundManager.Instance.PlayAudioClipOneShot(Sound_Type.Sound_SFX, (int)SFX_Num.Click_Button);
-            ClickShowPannelButton(combinationListPannel);
+        SoundManager.Instance.PlayAudioClipOneShot(Sound_Type.Sound_SFX, (int)SFX_Num.Click_Button);
+        ClickShowPannelButton(panel);
 
-            combinationListPannel.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = helpPage[pageIndex];
+        panel.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = helpPage[pageIndex];
+
+        if (PlayerPrefs.GetInt("SelectStage") == -1)
+        {
+            PlayerPrefs.SetInt("SelectStage", 0);
         }
     }
     public void ClickHelpNextPageBtn(GameObject combinationListPannel)
@@ -80,5 +84,9 @@ public class MenuClickEvent : MonoBehaviour
             pageIndex--;
             combinationListPannel.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = helpPage[pageIndex];
         }
+    }
+    public void GameQuit()
+    {
+        Application.Quit();
     }
 }

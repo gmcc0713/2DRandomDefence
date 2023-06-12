@@ -97,13 +97,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2212680536582285773}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: effd40d7e75755d408743c75bef1d1ce, type: 3}
+  m_Script: {fileID: 11500000, guid: edda03c28345cf1448925fd3b7dccd4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   HPBar: {fileID: 881422654448165940}
   damageUI: {fileID: 5955953253888015779}
-  moveSpeed: 3
-  defaultHealth: 100
+  monsterType: 0
+  moveSpeed: 5
+  defaultHealth: 50
   curHealth: 0
 --- !u!58 &5525265238446136385
 CircleCollider2D:
@@ -313,9 +314,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e1e14537cb53d6b4b85f7193d512b3c6, type: 2}
-  m_sharedMaterial: {fileID: -3035988773590995869, guid: e1e14537cb53d6b4b85f7193d512b3c6,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -390,7 +390,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7895317127148470004}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b6aceaeca987ab4cb9d447ef7c6196d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4cc7e21465e1f09479e7e3c40bb2d6a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &8490356396565387140
@@ -545,7 +545,8 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7419022383934153372, guid: fe802d28418d58d4389c20fe1390ff5f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fe802d28418d58d4389c20fe1390ff5f, type: 3}
 --- !u!114 &881422654448165940 stripped
 MonoBehaviour:
@@ -553,12 +554,31 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 8490356396565387140}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 4511910817035935909}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4511910817035935909 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5426354672272520993, guid: fe802d28418d58d4389c20fe1390ff5f,
+    type: 3}
+  m_PrefabInstance: {fileID: 8490356396565387140}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5469417407355270678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4511910817035935909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76fad32d73773c34abcd5c861ac312f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterHPBar: {fileID: 881422654448165940}
 --- !u!224 &8677376011197200543 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 990780550322679579, guid: fe802d28418d58d4389c20fe1390ff5f,

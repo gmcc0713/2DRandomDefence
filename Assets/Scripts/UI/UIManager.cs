@@ -36,7 +36,25 @@ public class UIManager : MonoBehaviour
             panel.SetActive(true);
         }
     }
+    public void ClickShowOptionPanelButton(GameObject panel)//특정 panel 보여주기 버튼 클릭
+    {
+        if (GameMgr.Instance._click_Type == CLICK_TYPE.IDLE)
+        {
+            SoundManager.Instance.PlayAudioClipOneShot(Sound_Type.Sound_SFX, (int)SFX_Num.Click_Button);
+            GameMgr.Instance._click_Type = CLICK_TYPE.Show_Pannel;
+            panel.SetActive(true);
+            Time.timeScale = 0;
+        }
+
+    }
     public void ClickHidePanelButton(GameObject panel)      //특정 panel 숨기기 버튼 클릭
+    {
+        SoundManager.Instance.PlayAudioClipOneShot(Sound_Type.Sound_SFX, (int)SFX_Num.Click_Button);
+        panel.SetActive(false);
+        GameMgr.Instance._click_Type = CLICK_TYPE.IDLE;
+        Time.timeScale = 1;
+    }
+    public void ClickHideOptionPanelButton(GameObject panel)      //특정 panel 숨기기 버튼 클릭
     {
         SoundManager.Instance.PlayAudioClipOneShot(Sound_Type.Sound_SFX, (int)SFX_Num.Click_Button);
         panel.SetActive(false);
@@ -61,7 +79,7 @@ public class UIManager : MonoBehaviour
         if (GameMgr.Instance._click_Type == CLICK_TYPE.IDLE)
         {
             SoundManager.Instance.PlayAudioClipOneShot(Sound_Type.Sound_SFX, (int)SFX_Num.Click_Button);
-            SetGoldUI();
+
             ground.ShowUnitGround();
             GameMgr.Instance._click_Type = CLICK_TYPE.Sell_Unit;
         }
@@ -147,7 +165,6 @@ public class UIManager : MonoBehaviour
     public void SetMonsterCountUI()
     {
         System.Text.StringBuilder monsterCount = new System.Text.StringBuilder(MonsterSpawner.Instance._remainingMonsterCount.ToString());
-        Debug.Log(MonsterSpawner.Instance._remainingMonsterCount);
         monsterCount.Append(" / ");
         monsterCount.Append(WaveManager.Instance._thisWaveMonsterCount.ToString());
         MonsterCountText.text = monsterCount.ToString();

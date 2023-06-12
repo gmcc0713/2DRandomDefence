@@ -22,6 +22,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private WaveData[] monsterWave;            //몬스터 스테이지,웨이브 배열
     [SerializeField] private TextMeshProUGUI stageText;
     [SerializeField] private TextMeshProUGUI waitTimerText;
+    [SerializeField] ParticleSystem monsterSpawnParticle;
 
     private int waveIndex = 0;
     public int _waveIndex => waveIndex;
@@ -39,10 +40,9 @@ public class WaveManager : MonoBehaviour
         if( monsterWave[waveIndex]._stageData.wave == 5 && !GameMgr.Instance._isGameEnd)
         {
             GameMgr.Instance._gameResultImage.GetComponent<GameResultSetting>().CallFadeOut(GameResult_Type.StageClear);
-            Debug.Log(PlayerPrefs.GetInt("MaxClearStage"));
+            SoundManager.Instance.PlayAudioClipOneShot(Sound_Type.Sound_SFX, (int)SFX_Num.Win);
+            SoundManager.Instance.StopBGM();
             PlayerPrefs.SetInt("MaxClearStage", monsterWave[waveIndex]._stageData.stage);
-            Debug.Log(monsterWave[waveIndex]._stageData.stage);
-            Debug.Log(PlayerPrefs.GetInt("MaxClearStage"));
         }
         else if(MonsterSpawner.Instance.MonsterIsEmptyInField() && !GameMgr.Instance._isGameEnd)
         {
@@ -51,7 +51,8 @@ public class WaveManager : MonoBehaviour
     }
     IEnumerator WaitForNextWave(int waitSecond)
     {
-        for(int i = 9;i>=0;i--)
+        monsterSpawnParticle.Stop();
+        for (int i = 9;i>=0;i--)
         {
             SetTimerText(i);
 
@@ -64,6 +65,7 @@ public class WaveManager : MonoBehaviour
         SetStageText();
         SetMonsterCounter();
         MonsterSpawner.Instance.WaveStart(monsterWave[waveIndex]);
+        monsterSpawnParticle.Play();
     }
     private void SetStageText()
     {
@@ -93,7 +95,6 @@ public class WaveManager : MonoBehaviour
         for (int i = 0; i < monsterWave[waveIndex]._monArr.Length; i++)
         {
             thisWaveMonsterCount += monsterWave[waveIndex]._monArr[i].monsterCount;
-            Debug.Log(i + "    " + thisWaveMonsterCount);
         }
     }
 

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public enum Sound_Type { Sound_BGM = 0, Sound_SFX,Sound_Character,Sound_Type_Count }
 public enum BGM_Num { BGM_MenuScene = 0, BGM_PlayScene }
-public enum SFX_Num { Click_Button = 0, CountDown}
+public enum SFX_Num { Click_Button = 0, CountDown,Win,Lose}
 public enum CharacterSound_Num { Unit_Attack_Sword = 0, Unit_Attack_Bow, Unit_Attack_Masic}
 public class SoundManager : MonoBehaviour
 {
@@ -42,7 +42,6 @@ public class SoundManager : MonoBehaviour
     }
     public void Initialize()
     {
-
     }
     // Update is called once per frame
     public void PlayAudioClipOneShot(Sound_Type sound_Type,int clip_num)
@@ -62,7 +61,10 @@ public class SoundManager : MonoBehaviour
         audioSources[(int)sound_Type].volume = value;
         volumeValue[(int)sound_Type] = value;
     }
-
+    public void StopBGM()
+    {
+        audioSources[(int)Sound_Type.Sound_BGM].Stop();
+    }
     void OnEnable()
     {
         // 씬 매니저의 sceneLoaded에 체인을 건다.

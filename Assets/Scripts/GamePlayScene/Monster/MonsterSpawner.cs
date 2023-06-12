@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public enum MonsterType { monster_1 = 0, monster_2, monster_3, monster_4, monster_5 }
@@ -101,13 +100,17 @@ public class MonsterSpawner : MonoBehaviour
     }
     public void DeleteMonsterInList(Monster monster)
     {
-        monsterList.Remove(monster);
-        remainingMonsterCount--;
-        UIManager.Instance.SetMonsterCountUI();
-        if (thisWaveSpawnEnd && MonsterIsEmptyInField() && spawnMonsterCor!=null)
+        if(monster!=null)
         {
-            spawnMonsterCor = null;
-            WaveManager.Instance.EndThisWave();
+            monsterList.Remove(monster);
+            remainingMonsterCount--;
+            UIManager.Instance.SetMonsterCountUI();
+            if (thisWaveSpawnEnd && MonsterIsEmptyInField() && spawnMonsterCor != null)
+            {
+                spawnMonsterCor = null;
+                WaveManager.Instance.EndThisWave();
+            }
         }
+       
     }
 }

@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+
 public enum CLICK_TYPE {IDLE,PLACING_UNIT, COMPOSITION_UNIT,Sell_Unit,Show_Pannel}
 public class GameMgr : MonoBehaviour
 {
-    [SerializeField] private UnitSpawner unitSpawner;
     [SerializeField] private PlayerInput input;
     [SerializeField] private Ground ground;
     [SerializeField] private GameObject gameResultImage;
@@ -68,9 +68,14 @@ public class GameMgr : MonoBehaviour
     public void Initialize()
     {
         input.SwitchCurrentActionMap("Player");
-        input.actions["MouseLeftBtnDown"].performed += MouseLeftBtnDown;
-        input.actions["MouseLeftBtnUp"].canceled += MouseLeftBtnUp;
+       /* input.actions["MouseLeftBtnDown"].performed += MouseLeftBtnDown;
         input.actions["Drag"].performed += Drag;
+        input.actions["MouseLeftBtnDown"].canceled += MouseLeftBtnUp;*/
+
+        input.actions["TouchPress"].started += MouseLeftBtnDown;
+        input.actions["Drag"].performed += Drag;
+        input.actions["TouchPress"].canceled += MouseLeftBtnUp;
+
 
         unitCombination = new Unit[2];
         playerHealth = 100;
@@ -82,6 +87,7 @@ public class GameMgr : MonoBehaviour
     }
     void MouseLeftBtnDown(InputAction.CallbackContext context)                  //마우스 버튼을 눌렀을때
     {
+
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 30)&& !isDragging)
         {
@@ -92,7 +98,7 @@ public class GameMgr : MonoBehaviour
                 case CLICK_TYPE.PLACING_UNIT:
                     if (hit.transform.CompareTag("GroundWithoutPlayer"))
                     {
-                        if (unitSpawner.SetNewUnitInField(hit.transform))
+                        if (UnitSpawner.Instance.SetNewUnitInField(hit.transform))
                         {
 
                             UIManager.Instance.UnitSpawnWaitImageDelete();
@@ -109,6 +115,7 @@ public class GameMgr : MonoBehaviour
                 case CLICK_TYPE.COMPOSITION_UNIT:
                     if (hit.transform.CompareTag("Unit"))
                     {
+                        
                         unitCombination[0] = hit.collider.GetComponent<Unit>();
                         unitCombination[0].SettingMoveImageWithMouse();
                         isDragging = true;
@@ -123,6 +130,7 @@ public class GameMgr : MonoBehaviour
                 case CLICK_TYPE.Sell_Unit:
                     if (hit.transform.CompareTag("Unit"))
                     {
+                        
                         UnitSpawner.Instance.SellUnit(hit.collider.GetComponent<Unit>());
                     }
                     else
@@ -137,6 +145,7 @@ public class GameMgr : MonoBehaviour
     }
     void MouseLeftBtnUp(InputAction.CallbackContext context)//마우스 버튼을 눌렀다가 땠을때
     {
+        Debug.Log("클릭 땜");
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 30))
         {
@@ -144,7 +153,7 @@ public class GameMgr : MonoBehaviour
             {
                 unitCombination[0].BackToImagePosition();                       //드래그로 이동중이던 이미지 원래대로 되돌리기
                 ground.ShowUnitGroundRemove();                                  //유닛을 놓을수 있는 표시 없애기
-
+               
                 if (hit.transform.CompareTag("Unit"))
                 {
                     unitCombination[1] = hit.collider.GetComponent<Unit>();
@@ -164,7 +173,7 @@ public class GameMgr : MonoBehaviour
             Vector2 delta = context.ReadValue<Vector2>();
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             worldPos.z = transform.position.z;
-            transform.position = startDragPos + (worldPos - startDragPos) + (Vector3)delta;
+            transform.position = worldPos  + (Vector3)delta;
             unitCombination[0].MoveImageWithMouse();
         }
     }
@@ -173,13 +182,17 @@ public class GameMgr : MonoBehaviour
     public void GetDamagePlayer(int damage)
     {
         playerHealth -= damage;
-        UIManager.Instance.SetHealthUI();
+        
 
         if(playerHealth<=0)
         {
+            playerHealth = 0;
             isGameEnd = true;
+            SoundManager.Instance.PlayAudioClipOneShot(Sound_Type.Sound_SFX, (int)SFX_Num.Lose);
+            SoundManager.Instance.StopBGM();
             gameResultImage.GetComponent<GameResultSetting>().CallFadeOut(GameResult_Type.GameOver);
         }
+        UIManager.Instance.SetHealthUI();
     }
     public bool IsEnoughtGold(int gold)
     {
@@ -193,6 +206,7 @@ public class GameMgr : MonoBehaviour
     public void GetGold(int addGold)
     {
         playerGold += addGold;
+        UIManager.Instance.SetGoldUI();
     }
 
     void OnEnable()
@@ -216,6 +230,15 @@ public class GameMgr : MonoBehaviour
         input.actions["MouseLeftBtnUp"].canceled -= MouseLeftBtnUp;
         input.actions["Drag"].performed -= Drag;
         SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    void TouchStart(InputAction.CallbackContext context)
+    {
+        Debug.Log("TouchStart");
+    }
+    void TouchEnd(InputAction.CallbackContext context)
+    {
+        Debug.Log("TouchEnd");
+
     }
 }
    

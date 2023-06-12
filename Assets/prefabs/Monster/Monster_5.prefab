@@ -145,7 +145,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 795554268951555104}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b6aceaeca987ab4cb9d447ef7c6196d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4cc7e21465e1f09479e7e3c40bb2d6a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2598878861976790995
@@ -245,14 +245,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2598878861976790995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: effd40d7e75755d408743c75bef1d1ce, type: 3}
+  m_Script: {fileID: 11500000, guid: edda03c28345cf1448925fd3b7dccd4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HPBar: {fileID: 2994706430362007201}
-  damageUI: {fileID: 7612308832834327377}
-  monsterType: 0
-  moveSpeed: 3
-  defaultHealth: 200
+  HPBar: {fileID: 0}
+  damageUI: {fileID: 0}
+  monsterType: 4
+  moveSpeed: 5
+  defaultHealth: 500
   curHealth: 0
 --- !u!58 &2130469559059938537
 CircleCollider2D:
@@ -540,15 +540,35 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7419022383934153372, guid: fe802d28418d58d4389c20fe1390ff5f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fe802d28418d58d4389c20fe1390ff5f, type: 3}
+--- !u!1 &1957274054469104176 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5426354672272520993, guid: fe802d28418d58d4389c20fe1390ff5f,
+    type: 3}
+  m_PrefabInstance: {fileID: 5793857499663533329}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3966513707066220631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957274054469104176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76fad32d73773c34abcd5c861ac312f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterHPBar: {fileID: 2994706430362007201}
 --- !u!114 &2994706430362007201 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8784481163103417264, guid: fe802d28418d58d4389c20fe1390ff5f,
     type: 3}
   m_PrefabInstance: {fileID: 5793857499663533329}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1957274054469104176}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}

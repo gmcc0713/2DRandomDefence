@@ -17,7 +17,6 @@ public class BlinkText : MonoBehaviour
 
     void OnEnable()
     {
-        Debug.Log(originText);
         StartCoroutine(BlinkStart());
     }
     void OnDisable()

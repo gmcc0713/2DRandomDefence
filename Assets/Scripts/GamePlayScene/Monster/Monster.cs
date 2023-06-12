@@ -24,6 +24,7 @@ public class Monster : MonoBehaviour, IPoolingObject
     private float maxHealth;
     public float curHealth;                                    //현재 생명력
     private Animator monsterAnimator;
+    private Coroutine monsterDieTimer;
     void Start()
     {
         Initialize();
@@ -91,6 +92,7 @@ public class Monster : MonoBehaviour, IPoolingObject
                 {
                     GameMgr.Instance.GetDamagePlayer((int)this.curHealth);
                     Monsterdie();
+                    monsterHPBar.HPBarInit(maxHealth);
                     MonsterSpawner.Instance.DeleteMonster(this);
 
                     Debug.Log("몬스터 목적지 도달");
@@ -101,9 +103,15 @@ public class Monster : MonoBehaviour, IPoolingObject
     }
     void DieCheck()
     {
-        if(curHealth<=0)
+        if (monsterDieTimer != null)
         {
-            StartCoroutine(DieAniTimer());
+            return;
+        }
+
+        if(curHealth <= 0)
+        {
+
+            monsterDieTimer = StartCoroutine(DieAniTimer());
         }
 
     }
@@ -134,12 +142,13 @@ public class Monster : MonoBehaviour, IPoolingObject
         monsterAnimator.SetBool("Dead", false);
         MonsterSpawner.Instance.DeleteMonster(this);
         Debug.Log("몬스터 풀링 삭제");
+        monsterHPBar.HPBarInit(maxHealth);
+        monsterDieTimer = null;
     }
     private void Monsterdie()
     {
         damageUI.DamageUIInIt();
-        monsterHPBar.HPBarInit(maxHealth);
+
         MonsterSpawner.Instance.DeleteMonsterInList(this);
-        Debug.Log("몬스터 리스트에서 삭제");
     }
 }

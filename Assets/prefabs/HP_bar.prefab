@@ -162,7 +162,6 @@ GameObject:
   m_Component:
   - component: {fileID: 990780550322679579}
   - component: {fileID: 8784481163103417264}
-  - component: {fileID: 7419022383934153372}
   m_Layer: 5
   m_Name: HP_bar
   m_TagString: Untagged
@@ -244,19 +243,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7419022383934153372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5426354672272520993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 798a5c2878080c94281f9b5d67677673, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterHPBar: {fileID: 0}
 --- !u!1 &5838809365756724724
 GameObject:
   m_ObjectHideFlags: 0

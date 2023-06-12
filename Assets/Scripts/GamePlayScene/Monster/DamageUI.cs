@@ -22,7 +22,7 @@ public class DamageUI : MonoBehaviour
     public void MonsterDamageUpdate(float damage)
     {
         gameObject.SetActive(true);
-        damageUI.text = damage.ToString();
+        damageUI.text = ((int)damage).ToString();
         StartCoroutine(DisapearDamageui());
     }
     IEnumerator DisapearDamageui()

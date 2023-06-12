@@ -16,6 +16,7 @@ public class GameDataController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        Application.targetFrameRate = 60;
     }
     private int maxStage;
     public int _maxStage => maxStage;
@@ -23,7 +24,6 @@ public class GameDataController : MonoBehaviour
     {
         PlayerPrefs.SetInt("MaxClearStage", 0);
         PlayerPrefs.SetInt("SelectStage", -1);
-        Debug.Log("씬데이터컨트롤러");
     }
 
 }
